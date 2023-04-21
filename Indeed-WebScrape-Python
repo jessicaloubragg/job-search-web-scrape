@@ -1,0 +1,62 @@
+from curses import mouseinterval
+from requests import options
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.edge.options import Options
+from selenium.webdriver.edge.service import Service
+from multiprocessing.connection import wait
+from pickle import TRUE
+from pprint import pprint
+from turtle import clear
+from winreg import DeleteValue
+from xml.dom.minidom import Element
+from numpy import true_divide
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+import requests
+from bs4 import BeautifulSoup
+from collections import Counter
+
+#I have imported a lot because I am planning on making the code more functional in the future.
+
+
+
+DRIVER_PATH = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedgedriver.exe'
+driver = webdriver.Edge()
+url = 'https://www.indeed.com/jobs?q=data+analyst&l=remote&vjk=237892d8757c81bc'
+#website that I am using
+driver.get(url)
+
+
+
+#This is finding the different job titles on the page
+job_title = driver.find_elements_by_class_name('jobTitle')
+
+
+#This will iterate through each job and job title. It will write them all to a file named: webScrape.txt
+def job_title_description():
+    f = open('webScrape.txt', 'w')
+    for job in job_title:
+        #print(job.text +'\n')
+        f.write('************JOB TITLE**********\n')
+        f.write(job.text + '\n \n')
+        job.click()
+        time.sleep(3)
+        job_des=driver.find_element_by_id('jobDescriptionText')
+        #print(job_des.text + '\n')
+        f.write('************DESCRIPTION**********\n')
+        f.write(job_des.text + '\n \n')
+    
+
+#For some reason I was getting a Unicode Error. It wasn't affecting the text output, but it was preventing the program from continuing. This should make it pass over this error
+try:
+    job_title_description()
+except UnicodeEncodeError as e:
+    pass
+#This will close the webscrape    
+driver.quit()
